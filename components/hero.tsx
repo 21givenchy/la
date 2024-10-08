@@ -4,7 +4,7 @@ import Image from "next/image";
 
 // Third-party library imports
 import Balancer from "react-wrap-balancer";
-import { Camera } from "lucide-react";
+import { ChartLine } from "lucide-react";
 
 // Local component imports
 import { Section, Container } from "@/components/craft";
@@ -37,7 +37,7 @@ const Hero = () => {
         <div className="not-prose mt-6 flex gap-2 md:mt-12">
           <Button asChild>
             <Link href="/">
-              <Camera className="mr-2" />
+              <ChartLine className="mr-2" />
               Get Started
             </Link>
           </Button>

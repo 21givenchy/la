@@ -8,7 +8,7 @@ import { Button } from "./ui/button"
 import { NavigationMenu, NavigationMenuLink, NavigationMenuList } from "./ui/navigation-menu"
 // import ModeToggle from "../mode-toggle"
 import { SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
-import ModeToggle from "./mode-toggle"
+import ModeToggle from "../components/mode-toggle"
 
 
 export function NavBar() {
@@ -66,16 +66,16 @@ export function NavBar() {
                 </NavigationMenu>
                 <div className="flex items-center gap-2 max-[825px]:hidden">
                     <Link href="/software">
-                        <Button variant="ghost">Software</Button>
+                        <Button variant="ghost"></Button>
                     </Link>
                     <Link href="/automation">
-                        <Button variant="ghost">Automation</Button>
+                        <Button variant="ghost"></Button>
                     </Link>
                     <Link href="/blog">
-                        <Button variant="ghost">Blog</Button>
+                        <Button variant="ghost">Join Beta</Button>
                     </Link>
                     <Link href="/projects">
-                        <Button variant="ghost">Projects</Button>
+                        <Button variant="ghost">Sign in</Button>
                     </Link>
                     <ModeToggle />
                 </div>
