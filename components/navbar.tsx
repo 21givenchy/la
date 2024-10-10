@@ -9,7 +9,7 @@ import { NavigationMenu, NavigationMenuLink, NavigationMenuList } from "./ui/nav
 // import ModeToggle from "../mode-toggle"
 import { SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
 import ModeToggle from "../components/mode-toggle"
-
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 export function NavBar() {
 
@@ -75,7 +75,13 @@ export function NavBar() {
                         <Button variant="ghost">Join Beta</Button>
                     </Link>
                     <Link href="/projects">
-                        <Button variant="ghost">Sign in</Button>
+                      
+                        <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
                     </Link>
                     <ModeToggle />
                 </div>
