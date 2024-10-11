@@ -30,27 +30,34 @@ export function NavBar() {
                         <div className="flex flex-col space-y-3 mt-[1rem] z-[99]">
                             <DialogClose asChild>
                                 <Link href="/">
-                                    <Button variant="outline" className="w-full">Home</Button>
+                                    <Button variant="outline" className="w-full">About us</Button>
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
                                 <Link href="/software">
-                                    <Button variant="outline" className="w-full">Software</Button>
+                                    <Button variant="outline" className="w-full"></Button>
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
-                                <Link href="/automation">
-                                    <Button variant="outline" className="w-full">Automation</Button>
+                                <Link href="https://discord.gg/qpV9Gg3S54">
+                                    <Button variant="outline" className="w-full">Discord</Button>
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
                                 <Link href="/blog">
-                                    <Button variant="outline" className="w-full">Blog</Button>
+                                    <Button variant="outline" className="w-full">Measure your impact </Button>
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
                                 <Link href="/projects">
-                                    <Button variant="outline" className="w-full">Projects</Button>
+                               <Button variant="outline" className="w-full">           
+                        <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            </Button>
                                 </Link>
                             </DialogClose>
                             <ModeToggle />
@@ -71,7 +78,7 @@ export function NavBar() {
                     <Link href="/automation">
                         <Button variant="ghost"></Button>
                     </Link>
-                    <Link href="/blog">
+                    <Link href="/">
                         <Button variant="ghost">Join Beta</Button>
                     </Link>
                     <Link href="/projects">
