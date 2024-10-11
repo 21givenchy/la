@@ -226,9 +226,12 @@ const Box = ({
     11: "grid-cols-11",
     12: "grid-cols-12",
   };
+  type ResponsiveProp = 
+  | number 
+  | { sm?: number; md?: number; lg?: number; xl?: number; "2xl"?: number };
 
   const getResponsiveClasses = (
-    prop: any,
+    prop: ResponsiveProp,
     classMap: Record<string | number, string>
   ) => {
     if (typeof prop === "object") {
@@ -244,10 +247,10 @@ const Box = ({
 
   const stackClasses = cn(
     cols || rows ? "grid" : "flex",
-    getResponsiveClasses(direction, directionClasses),
+    getResponsiveClasses(direction as ResponsiveProp, directionClasses),
     typeof wrap === "boolean"
       ? wrapClasses
-      : getResponsiveClasses(wrap, { true: "flex-wrap", false: "flex-nowrap" }),
+      : getResponsiveClasses(wrap as ResponsiveProp, { true: "flex-wrap", false: "flex-nowrap" }),
     getResponsiveClasses(gap, gapClasses),
     cols && getResponsiveClasses(cols, colsClasses),
     rows && getResponsiveClasses(rows, colsClasses), // Assuming rows use the same classes as cols

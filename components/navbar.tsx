@@ -1,6 +1,6 @@
 "use client"
 import { cn } from "@/lib/utils"
-import { BookOpen, MenuIcon } from 'lucide-react'
+import {  MenuIcon } from 'lucide-react'
 import Link from "next/link"
 import * as React from "react"
 import { Dialog, DialogClose } from "./ui/dialog"
@@ -9,7 +9,7 @@ import { NavigationMenu, NavigationMenuLink, NavigationMenuList } from "./ui/nav
 // import ModeToggle from "../mode-toggle"
 import { SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
 import ModeToggle from "../components/mode-toggle"
-import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import {  SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 export function NavBar() {
 
