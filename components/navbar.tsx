@@ -49,7 +49,7 @@ export function NavBar() {
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
-                                <Link href="/projects">
+                                
                                <Button variant="outline" className="w-full">           
                         <SignedOut>
               <SignInButton />
@@ -58,7 +58,7 @@ export function NavBar() {
               <UserButton />
             </SignedIn>
             </Button>
-                                </Link>
+                                
                             </DialogClose>
                             <ModeToggle />
                         </div>
