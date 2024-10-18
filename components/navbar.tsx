@@ -29,8 +29,8 @@ export function NavBar() {
                         </SheetHeader>
                         <div className="flex flex-col space-y-3 mt-[1rem] z-[99]">
                             <DialogClose asChild>
-                                <Link href="/">
-                                    <Button variant="outline" className="w-full">About us</Button>
+                                <Link href="/about">
+                                    <Button variant="outline" className="w-full">About</Button>
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
@@ -44,7 +44,7 @@ export function NavBar() {
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
-                                <Link href="/blog">
+                                <Link href="/">
                                     <Button variant="outline" className="w-full">Measure your impact </Button>
                                 </Link>
                             </DialogClose>
