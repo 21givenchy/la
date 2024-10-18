@@ -72,16 +72,18 @@ export function NavBar() {
                     </NavigationMenuList>
                 </NavigationMenu>
                 <div className="flex items-center gap-2 max-[825px]:hidden">
-                    <Link href="/software">
-                        <Button variant="ghost"></Button>
+                    <Link href="/about">
+                        <Button variant="ghost">About Us </Button>
                     </Link>
                     <Link href="/automation">
                         <Button variant="ghost"></Button>
                     </Link>
-                    <Link href="/">
-                        <Button variant="ghost">Join Beta</Button>
-                    </Link>
-                    <Link href="/projects">
+                
+                    <Link href="https://discord.gg/qpV9Gg3S54">
+                                    <Button variant="outline" className="w-full">Discord</Button>
+                                </Link>
+                    
+                    <Link href="/signin">
                       
                         <SignedOut>
               <SignInButton />
