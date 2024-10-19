@@ -7,6 +7,8 @@ import { ChartLine } from "lucide-react";
 import { Section, Container } from "@/components/craft";
 import { Button,  } from "@/components/ui/button";
 
+import Placeholder from "@/public/Discover.png";
+
 
 // Asset imports
 import Logo from "@/public/logo.png";
@@ -45,7 +47,21 @@ const Hero = () => {
           <Button variant={"ghost"} asChild>
             <Link href="/posts">Sign up -{">"}</Link>
           </Button>
+
         </div>
+        <div className="not-prose my-8 h-96 w-full overflow-hidden rounded-lg border md:h-[480px] md:rounded-xl
+">
+             
+<Image     
+className="h-full w-full object-cover object-bottom"
+src={Placeholder}
+width={1920}
+height={1080}
+alt="hero image"  
+placeholder="blur"
+
+            />
+            </div>
       </Container>
     </Section>
   );

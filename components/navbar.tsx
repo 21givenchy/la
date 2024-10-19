@@ -44,7 +44,7 @@ export function NavBar() {
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
-                                <Link href="/">
+                                <Link href="/impact">
                                     <Button variant="outline" className="w-full">Measure your impact </Button>
                                 </Link>
                             </DialogClose>
