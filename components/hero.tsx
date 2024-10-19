@@ -8,6 +8,7 @@ import { Section, Container } from "@/components/craft";
 import { Button,  } from "@/components/ui/button";
 
 import Placeholder from "@/public/Discover.png";
+import {  SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 
 // Asset imports
@@ -36,7 +37,7 @@ const Hero = () => {
         </h3>
         <div className="not-prose mt-6 flex gap-2 md:mt-12">
           <Button asChild >
-            <Link href="/">
+            <Link href="/Impact">
               <ChartLine className="mr-2" />
               Get Started
             </Link>
@@ -45,7 +46,13 @@ const Hero = () => {
           </Button>
           
           <Button variant={"ghost"} asChild>
-            <Link href="/posts">Sign up -{">"}</Link>
+            <Link href="/signin">
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn> -{">"}</Link>
           </Button>
 
         </div>

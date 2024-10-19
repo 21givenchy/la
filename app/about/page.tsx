@@ -13,7 +13,7 @@ const About: React.FC = () => {
         <div className="flex gap-5 max-md:flex-col">
           <div className="flex flex-col w-[51%] max-md:ml-0 max-md:w-full">
             <div className="font-extrabold leading-none text-center uppercase text-[64px] text-neutral-800 max-md:mt-10 max-md:max-w-full max-md:text-4xl">
-              We're FOR
+              We re FOR
             </div>
           </div>
           <ImageWithText imageSrc="" text="" />

@@ -1,15 +1,15 @@
 "use client"
-import { cn } from "@/lib/utils"
-import {  MenuIcon } from 'lucide-react'
-import Link from "next/link"
-import * as React from "react"
-import { Dialog, DialogClose } from "./ui/dialog"
-import { Button } from "./ui/button"
-import { NavigationMenu, NavigationMenuLink, NavigationMenuList } from "./ui/navigation-menu"
+import { cn } from "@/lib/utils";
+import {  MenuIcon } from 'lucide-react';
+import Link from "next/link";
+import * as React from "react";
+import { Dialog, DialogClose } from "./ui/dialog";
+import { Button } from "./ui/button";
+import { NavigationMenu, NavigationMenuLink, NavigationMenuList } from "./ui/navigation-menu";
 // import ModeToggle from "../mode-toggle"
-import { SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
-import ModeToggle from "../components/mode-toggle"
-import {  SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import { SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import ModeToggle from "../components/mode-toggle";
+import {  SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export function NavBar() {
 
@@ -45,7 +45,7 @@ export function NavBar() {
                             </DialogClose>
                             <DialogClose asChild>
                                 <Link href="/impact">
-                                    <Button variant="outline" className="w-full">Measure your impact </Button>
+                                    <Button variant="outline" className="w-full">try F^3 </Button>
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
@@ -75,8 +75,8 @@ export function NavBar() {
                     <Link href="/about">
                         <Button variant="ghost">About Us </Button>
                     </Link>
-                    <Link href="/automation">
-                        <Button variant="ghost"></Button>
+                    <Link href="/Impact">
+                        <Button variant="ghost">Try F^3</Button>
                     </Link>
                 
                     <Link href="https://discord.gg/qpV9Gg3S54">
