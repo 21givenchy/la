@@ -22,10 +22,10 @@ const CTA = () => {
         </h4>
         <div className="not-prose flex items-center gap-2">
           <Button asChild>
-            <Link href="#">Get Started for free</Link>
+            <Link href="/impact">Get Started for free</Link>
           </Button>
           <Button variant="link" asChild>
-            <Link href="#">Learn More {"->"}</Link>
+            <Link href="impact">Learn More {"->"}</Link>
           </Button>
         </div>
       </Container>

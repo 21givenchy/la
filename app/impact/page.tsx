@@ -4,8 +4,18 @@ import { useState } from 'react'
 import { User, Bell, ChevronDown, Brain, Map, Leaf, Trophy, Lock } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import { useUser } from '@clerk/nextjs';
 
 export default function Dashboard() {
+  const { isSignedIn, user } = useUser();
+
+  if (!isSignedIn) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-3xl font-extrabold">Please sign in to access this page.</div>
+      </div>
+    ); // Optionally redirect or show a message
+  }
   const [activeCategory, setActiveCategory] = useState('All')
 
   const categories = ['All', 'Social', 'Environmental', 'Economic', 'Governance', 'Education']
@@ -45,17 +55,17 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-900 text-white">
       <header className="bg-gray-800 p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">FrontForumFocus</h1>
+          <h1 className="text-2xl font-bold"></h1>
           <nav className="space-x-4">
-            <Button variant="ghost">Dashboard</Button>
-            <Button variant="ghost">Track</Button>
-            <Button variant="ghost">Progress</Button>
+            <Button variant="ghost"></Button>
+            <Button variant="ghost"></Button>
+            <Button variant="ghost"></Button>
           </nav>
           <div className="flex items-center space-x-4">
             <Bell className="h-6 w-6" />
             <div className="flex items-center">
               <User className="h-6 w-6 mr-2" />
-              <span>Hello, User</span>
+              <span>Hello, {user.firstName}!</span>
               <ChevronDown className="h-4 w-4 ml-2" />
             </div>
           </div>
