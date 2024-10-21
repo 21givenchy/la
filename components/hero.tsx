@@ -12,7 +12,7 @@ import {  SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 
 // Asset imports
-import Logo from "@/public/logo.png";
+import Logo from "/public/logo.png";
 
 const Hero = () => {
   return (

@@ -5,7 +5,7 @@ import { User, Bell, ChevronDown, Brain, Map, Leaf, Trophy, Lock } from 'lucide-
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 
-export default function Dashboard() {
+export function DashboardComponent() {
   const [activeCategory, setActiveCategory] = useState('All')
 
   const categories = ['All', 'Social', 'Environmental', 'Economic', 'Governance', 'Education']

@@ -1,5 +1,7 @@
 import React from 'react';
+import Image from 'next/image';
 import ImageWithText from './ImageWithText';
+
 
 const About: React.FC = () => {
   return (
@@ -16,11 +18,17 @@ const About: React.FC = () => {
               We re FOR
             </div>
           </div>
-          <ImageWithText imageSrc="" text="" />
+       
+          <Image
+            src="/person.png" 
+
+            alt='person'
+            width={192}
+            height={108} />
           <div className="flex flex-col ml-5 w-[32%] max-md:ml-0 max-md:w-full">
             <div className="font-extrabold leading-none text-center uppercase text-[64px] text-neutral-800 max-md:mt-10 max-md:text-4xl">
               anyone
-            </div>
+            </div>  
           </div>
         </div>
       </section>

@@ -75,7 +75,7 @@ export function NavBar() {
                     <Link href="/about">
                         <Button variant="ghost">About Us </Button>
                     </Link>
-                    <Link href="/Impact">
+                    <Link href="/impact">
                         <Button variant="ghost">Try F^3</Button>
                     </Link>
                 
