@@ -4,10 +4,18 @@ import { useState } from 'react'
 import { User, Bell, ChevronDown, Brain, Map, Leaf, Trophy, Lock } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { useUser } from '@clerk/nextjs';
+import { useUser, useSignIn } from '@clerk/nextjs';
+import Image from 'next/image';
 
 export default function Dashboard() {
+  const { isLoaded } = useSignIn();
   const { isSignedIn, user } = useUser();
+  const [activeCategory, setActiveCategory] = useState('All')
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
 
   if (!isSignedIn) {
     return (
@@ -16,7 +24,6 @@ export default function Dashboard() {
       </div>
     ); // Optionally redirect or show a message
   }
-  const [activeCategory, setActiveCategory] = useState('All')
 
   const categories = ['All', 'Social', 'Environmental', 'Economic', 'Governance', 'Education']
   const alignments = [
@@ -120,7 +127,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {resources.map((resource) => (
               <div key={resource.title} className="relative group">
-                <img
+                <Image
                   src={resource.image}
                   alt={resource.title}
                   className="w-full h-32 object-cover rounded-lg"

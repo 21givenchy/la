@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { User, Bell, ChevronDown, Brain, Map, Leaf, Trophy, Lock } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import Image from 'next/image';
 
 export function DashboardComponent() {
   const [activeCategory, setActiveCategory] = useState('All')
@@ -110,7 +111,7 @@ export function DashboardComponent() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {resources.map((resource) => (
               <div key={resource.title} className="relative group">
-                <img
+                <Image
                   src={resource.image}
                   alt={resource.title}
                   className="w-full h-32 object-cover rounded-lg"
