@@ -44,11 +44,10 @@ export default function Dashboard() {
     { title: 'Educational Initiatives', progress: 85 },
   ]
   const resources = [
-    { title: 'Sustainable Development Goals', image: '/placeholder.svg?height=100&width=200' },
-    { title: 'Corporate Social Responsibility', image: '/placeholder.svg?height=100&width=200' },
-    { title: 'Environmental, Social, and Governance (ESG)', image: '/placeholder.svg?height=100&width=200' },
-    { title: 'Impact Investing', image: '/placeholder.svg?height=100&width=200' },
-    { title: 'Social Entrepreneurship', image: '/placeholder.svg?height=100&width=200' },
+    { title: 'Sustainable Development Goals', image: '/placeholder.svg', width: 200, height: 100 },
+    { title: 'Corporate Social Responsibility', image: '/placeholder.svg', width: 200, height: 100 },
+    { title: 'Environmental, Social, and Governance (ESG)', image: '/placeholder.svg', width: 200, height: 100 },
+    { title: 'Social Entrepreneurship', image: '/placeholder.svg', width: 200, height: 100 },
   ]
   const quizzes = [
     { icon: Brain, label: 'Impact Awareness' },
@@ -130,6 +129,8 @@ export default function Dashboard() {
                 <Image
                   src={resource.image}
                   alt={resource.title}
+                  width={resource.width}
+                  height={resource.height}
                   className="w-full h-32 object-cover rounded-lg"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
