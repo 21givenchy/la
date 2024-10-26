@@ -1,69 +1,58 @@
-// React and Next.js
-import React from "react";
+import { BarChart3, Users, Clock, FileText, LineChart, Leaf } from 'lucide-react'
 
-// Layout Components
-import { Section, Container } from "@/components/craft";
-import Balancer from "react-wrap-balancer";
-
-// Icons
-import { Coins } from "lucide-react";
-
-type FeatureText = {
-  icon: JSX.Element;
-  title: string;
-  description: string;
-};
-
-const featureText: FeatureText[] = [
-  {
-    icon: <Coins className="h-6 w-6" />,
-    title: "Sustainability Metrics",
-    description:
-      "Identify key sustainability indicators tailored to your business or personal goals.",
-  },
-  {
-    icon: <Coins className="h-6 w-6" />,
-    title: "Impact Tracking",
-    description:
-      "Monitor and visualize your progress towards sustainable practices and goals.",
-  },
-  {
-    icon: <Coins className="h-6 w-6" />,
-    title: "Data Driven Insights",
-    description:
-      "Gain valuable insights to optimize your sustainability efforts and maximize impact.",
-  },
-];
-
-const Feature = () => {
+export default function Features() {
   return (
-    <Section className="border-b">
-      <Container className="not-prose">
-        <div className="flex flex-col gap-6">
-          <h3 className="text-4xl">
-            <Balancer>
-            We believe that understanding your impact is the first step toward creating positive change.
-            </Balancer>
-          </h3>
-          <h4 className="text-2xl font-light opacity-70">
-            <Balancer>
-            Explore our key features designed to help you measure, manage, and maximize your positive contributions to the planet and society.
-            </Balancer>
-          </h4>
-
-          <div className="mt-6 grid gap-6 md:mt-12 md:grid-cols-3">
-            {featureText.map(({ icon, title, description }, index) => (
-              <div className="flex flex-col gap-4" key={index}>
-                {icon}
-                <h4 className="text-xl text-primary">{title}</h4>
-                <p className="text-base opacity-75">{description}</p>
-              </div>
-            ))}
-          </div>
+    <div className="min-h-screen bg-green-50 p-8">
+      <div className="max-w-6xl mx-auto">
+        <p className="text-green-600 font-semibold mb-2">Key Features</p>
+        <h1 className="text-5xl font-bold text-green-900 mb-4">Impact Visualizer</h1>
+        <p className="text-xl text-green-700 mb-12">
+          Easily visualize your sustainability efforts and their impact on the planet and communities.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
+              <feature.icon className="w-12 h-12 text-green-500 mb-4" />
+              <h2 className="text-xl font-semibold text-green-800 mb-2">{feature.title}</h2>
+              <p className="text-green-600">{feature.description}</p>
+            </div>
+          ))}
         </div>
-      </Container>
-    </Section>
-  );
-};
+      </div>
+    </div>
+  )
+}
 
-export default Feature;
+const features = [
+  {
+    icon: Leaf,
+    title: "Sustainability Goals",
+    description: "Set and monitor your sustainability goals to ensure you are making a difference."
+  },
+  {
+    icon: BarChart3,
+    title: "Data Insights",
+    description: "Gain insights from your data to make informed decisions for a sustainable future."
+  },
+  {
+    icon: Users,
+    title: "Community Engagement",
+    description: "Engage with a community of like-minded individuals and businesses committed to sustainability."
+  },
+  {
+    icon: Clock,
+    title: "Real-Time Tracking",
+    description: "Track your impact in real-time and adjust your strategies for maximum effectiveness."
+  },
+  {
+    icon: FileText,
+    title: "Custom Reports",
+    description: "Generate custom reports to showcase your sustainability achievements and progress."
+  },
+  {
+    icon: LineChart,
+    title: "Impact Assessment",
+    description: "Assess your impact on both people and the planet with comprehensive metrics."
+  }
+]
