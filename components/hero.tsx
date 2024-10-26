@@ -1,23 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import Balancer from "react-wrap-balancer";
-import { ChartLine } from "lucide-react";
-
-import { Section, Container } from "@/components/craft";
-import { Button } from "@/components/ui/button";
-
-import Placeholder from "@/public/Discover.png";
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-
-
-// Asset imports
-import Logo from "/public/logo.png";
+import Placeholder from "@/public/Discover.png"; // Placeholder image
+import Logo from "/public/logo.png"; // Logo image
 
 const Hero = () => {
   return (
-    <div className="flex overflow-hidden flex-wrap gap-12 justify-center items-center bg-emerald-50">
-      <div className="flex flex-wrap flex-1 shrink justify-center items-center self-stretch my-auto w-full basis-0 min-w-[240px] max-md:max-w-full">
-        <div className="flex flex-col flex-1 shrink justify-center items-center self-stretch px-10 py-12 my-auto text-center rounded-2xl basis-0 min-w-[320px] max-md:px-5 max-md:max-w-full">
+    <div className="flex flex-col h-screen overflow-hidden bg-emerald-50">
+      <div className="flex flex-1 flex-wrap gap-12 justify-center items-center">
+        <div className="flex flex-col flex-1 justify-center items-center self-stretch px-10 py-12 text-center rounded-2xl basis-0 min-w-[320px] max-md:px-5 max-md:max-w-full">
           <div className="flex flex-col justify-center w-full max-w-[940px] min-w-[304px] max-md:max-w-full">
             <div className="flex flex-col justify-center items-start w-full max-md:max-w-full">
               <div className="text-7xl font-extrabold tracking-tighter text-emerald-900 leading-[78px] max-md:max-w-full max-md:text-4xl max-md:leading-10">
@@ -45,18 +36,24 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-1 shrink gap-0 justify-center items-end self-stretch py-16 my-auto bg-pink-200 basis-20 min-w-[320px] max-md:max-w-full">
+        <div className="flex flex-1 justify-center items-end self-stretch py-16 my-auto bg-pink-200 basis-20 min-w-[320px] max-md:max-w-full">
           <div className="flex flex-col min-w-[240px] w-[264px]">
             <div className="flex relative z-10 flex-col justify-center px-7 py-8 mt-0 aspect-[0.524] max-md:px-5 max-md:-mr-1.5">
-              
-         
+              <Image
+                loading="lazy"
+                src={Logo}
+                alt="Company Logo"
+                className="object-cover absolute inset-0 size-full"
+                width={400}
+                height={400}
+              />
               <Image
                 loading="lazy"
                 src={Placeholder}
                 alt="Hero Image"
-                className="object-fit aspect-[0.46] w-[400px]"
-                width={1200}
-                height={800}
+                className="object-contain aspect-[0.46] w-[214px]"
+                width={400}
+                height={400}
               />
             </div>
           </div>
