@@ -9,7 +9,7 @@ export default function SignUpPage() {
 
     return (
         
-            <div className="flex min-w-screen justify-center my-[5rem]">
+            <div className="pt-20 flex min-w-screen justify-center my-[5rem]">
                 <SignUp />
             </div>
         
