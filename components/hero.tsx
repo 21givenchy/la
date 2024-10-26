@@ -46,13 +46,14 @@ const Hero = () => {
           </Button>
           
           <Button variant={"ghost"} asChild>
-            <Link href="/signin">
+            <Link href="/sign-in">
             <SignedOut>
               <SignInButton />
             </SignedOut>
             <SignedIn>
               <UserButton />
-            </SignedIn> -{">"}</Link>
+            </SignedIn> -{">"}
+            </Link>
           </Button>
 
         </div>

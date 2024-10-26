@@ -83,7 +83,7 @@ export function NavBar() {
                                     <Button variant="outline" className="w-full">Discord</Button>
                                 </Link>
                     
-                    <Link href="/signin">
+                    <Link href="/sign-in">
                       
                         <SignedOut>
               <SignInButton />

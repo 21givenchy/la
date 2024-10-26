@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import ImageWithText from './ImageWithText';
 
 
 const About: React.FC = () => {
@@ -40,7 +39,7 @@ const About: React.FC = () => {
               who aspires
             </div>
           </div>
-          <ImageWithText imageSrc="" text="" />
+          
         </div>
       </section>
       
@@ -51,7 +50,7 @@ const About: React.FC = () => {
               to make 
             </div>
           </div>
-          <ImageWithText imageSrc="" text="" />
+          
           <div className="flex flex-col ml-5 w-[27%] max-md:ml-0 max-md:w-full">
             <div className="font-extrabold leading-none text-center uppercase text-[64px] text-neutral-800 max-md:mt-10 max-md:text-4xl">
               meaningful impact 
