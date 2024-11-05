@@ -34,8 +34,8 @@ export function NavBar() {
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
-                                <Link href="/software">
-                                    <Button variant="outline" className="w-full"></Button>
+                                <Link href="/">
+                                    <Button variant="outline" className="w-full">Home</Button>
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
