@@ -39,7 +39,7 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
       org_address: "65 Sunrise Ave.",
       org_city: "Excel sheets",
       org_state: "Carbon Footprint",
-      org_zip: "M4A 1A9",
+      org_zip: "hybrid grid eg solar",
       org_country: "Kenya",
       org_description: "Empowering businesses to make a positive impact.",
       org_logo: "",
