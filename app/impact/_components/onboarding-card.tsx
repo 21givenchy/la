@@ -6,7 +6,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Textarea } from '@/components/ui/textarea'
-import { createChurch } from '@/utils/actions/create-church'
 import { createChurchSchema } from '@/utils/types'
 import { useUser } from '@clerk/nextjs'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -53,30 +52,23 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
     }
   }, [isLoaded, user, form])
 
-  async function onSubmit(data: z.infer<typeof createChurchSchema>) {
+  async function onSubmit() {
     setIsSubmitting(true)
     try {
       if (!user || !user.id) {
         throw new Error("User is not authenticated")
       }
-      const submissionData = {
-        ...data,
-        userId: user.id
-      }
-      console.log('Submitting data:', submissionData)
-      const response = await createChurch(submissionData)
-      if (response?.success) {
-        toast.success("Your church has been created, redirecting to dashboard")
-        onComplete()
-        setTimeout(() => {
-          router.push('/dashboard')
-        }, 2000) // Delay redirect for 2 seconds to show the toast
-      } else {
-        toast.error("Failed to create church. Please try again.")
-      }
+      
+      // Since there's no database, we'll simulate a successful submission
+      toast.success("Your organization has been created, redirecting to dashboard")
+      onComplete()
+      router.push('/impact') // Remove the setTimeout for immediate redirect
+      
     } catch (error) {
-      console.error("Error creating church:", error)
+      console.error("Error creating organization:", error)
       toast.error("An unexpected error occurred. Please try again.")
+    } finally {
+      setIsSubmitting(false) // Make sure to reset the submitting state
     }
   }
 
