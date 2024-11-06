@@ -213,9 +213,9 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
                     name="org_address"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Address</FormLabel>
+                        <FormLabel>Country</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder='123 Church St.' />
+                          <Input {...field} placeholder='Kenya' />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -226,7 +226,7 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
                     name="org_city"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>City</FormLabel>
+                        <FormLabel>How do you currently collect sustainability data?</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder='Goshen' />
                         </FormControl>
@@ -239,9 +239,9 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
                     name="org_state"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>State</FormLabel>
+                        <FormLabel>Key sustainability metrics you want to track</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder='NY' />
+                          <Input {...field} placeholder='Carbon footprint' />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
