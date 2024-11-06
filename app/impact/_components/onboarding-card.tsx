@@ -16,7 +16,12 @@ import { useForm } from "react-hook-form"
 import { toast } from 'sonner'
 import { z } from "zod"
 
-export default function OnboardingSteps() {
+// Update the interface to remove userId
+interface OnboardingStepsProps {
+  onComplete: () => void;
+}
+
+export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
   const [currentStep, setCurrentStep] = useState(1)
   const [isCompleted, setIsCompleted] = useState(false)
   const totalSteps = 4
@@ -27,17 +32,17 @@ export default function OnboardingSteps() {
   const form = useForm<z.infer<typeof createChurchSchema>>({
     resolver: zodResolver(createChurchSchema),
     defaultValues: {
-      org_name: "Tsega Bible Fellowship Church",
-      org_site: "https://www.tsegabiblechurch.com",
-      org_email: "tsegabiblechurch@gmail.com",
+      org_name: "frontforumfocus",
+      org_site: "https://www.frontforumfocus.tech",
+      org_email: "frontforumfocus@gmail.com",
       org_phone: "(289) 946-1487",
       org_address: "65 Sunrise Ave.",
       org_city: "North York",
       org_state: "ON",
       org_zip: "M4A 1A9",
       org_country: "CA",
-      org_description: "Grow in grace. Grow in knowledge.",
-      org_logo: "https://www.tsegabiblechurch.com/_next/image?url=https%3A%2F%2Fvngdsgitgimaumyqaatn.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fimages%2FTBF.webp&w=128&q=75",
+      org_description: "Empowering businesses to make a positive impact.",
+      org_logo: "",
       userId: '',
     }
   })
@@ -62,6 +67,7 @@ export default function OnboardingSteps() {
       const response = await createChurch(submissionData)
       if (response?.success) {
         toast.success("Your church has been created, redirecting to dashboard")
+        onComplete()
         setTimeout(() => {
           router.push('/dashboard')
         }, 2000) // Delay redirect for 2 seconds to show the toast
@@ -92,7 +98,7 @@ export default function OnboardingSteps() {
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle className="mb-4">Welcome to GoshenPay</CardTitle>
+          <CardTitle className="mb-4">Welcome to frontforumfocus</CardTitle>
           <div className="relative">
             <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2" />
             <div
@@ -136,7 +142,7 @@ export default function OnboardingSteps() {
                       <FormItem>
                         <FormLabel>Site URL</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder='https://church.goshenpay.com' />
+                          <Input {...field} placeholder='https://frontforumfocus.up.railway.app' />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -147,9 +153,9 @@ export default function OnboardingSteps() {
                     name="org_logo"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Logo URL</FormLabel>
+                        <FormLabel>Org size</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder='https://example.com/logo.png' />
+                          <Input {...field} placeholder='99-1000' />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -179,7 +185,7 @@ export default function OnboardingSteps() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder='info@goshenpay.com' />
+                          <Input {...field} placeholder='frontforumfocus@gmail.com' />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

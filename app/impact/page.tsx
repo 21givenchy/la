@@ -6,11 +6,14 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { useUser, useSignIn } from '@clerk/nextjs';
 import Image from 'next/image';
+import OnboardingSteps from './_components/onboarding-card'
 
 export default function Dashboard() {
   const { isLoaded } = useSignIn();
   const { isSignedIn, user } = useUser();
   const [activeCategory, setActiveCategory] = useState('All')
+  const [showOnboarding, setShowOnboarding] = useState(true)
+
 
   if (!isLoaded) {
     return <div>Loading...</div>;
@@ -24,6 +27,16 @@ export default function Dashboard() {
       </div>
     ); // Optionally redirect or show a message
   }
+    // Show onboarding if it hasn't been completed
+    if (showOnboarding) {
+      return (
+        <div className="min-h-screen bg-gray-900">
+          <OnboardingSteps 
+            onComplete={() => setShowOnboarding(false)} 
+          />
+        </div>
+      );
+    }
 
   const categories = ['All', 'Social', 'Environmental', 'Economic', 'Governance', 'Education']
   const alignments = [
@@ -156,3 +169,4 @@ export default function Dashboard() {
     </div>
   )
 }
+
