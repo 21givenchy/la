@@ -37,10 +37,10 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
       org_email: "frontforumfocus@gmail.com",
       org_phone: "(289) 946-1487",
       org_address: "65 Sunrise Ave.",
-      org_city: "North York",
-      org_state: "ON",
+      org_city: "Excel sheets",
+      org_state: "Carbon Footprint",
       org_zip: "M4A 1A9",
-      org_country: "CA",
+      org_country: "Kenya",
       org_description: "Empowering businesses to make a positive impact.",
       org_logo: "",
       userId: '',
@@ -228,7 +228,7 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
                       <FormItem>
                         <FormLabel>How do you currently collect sustainability data?</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder='Goshen' />
+                          <Input {...field} placeholder='Excel sheets' />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -252,9 +252,9 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
                     name="org_zip"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>ZIP Code</FormLabel>
+                        <FormLabel>Current sustainability initiatives</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder='12345' />
+                          <Input {...field} placeholder='hybrid grid eg solar' />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
