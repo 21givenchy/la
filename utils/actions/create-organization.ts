@@ -15,6 +15,9 @@ export async function createOrganization(data: CreateOrgData) {
     if (!userId) {
       throw new Error("Unauthorized");
     }
+    console.log("Attempting to create organization with data:", {
+      ...data
+    });
 
     const organization = await db.insert(organizationsTable).values({
       userId: userId,
@@ -31,16 +34,18 @@ export async function createOrganization(data: CreateOrgData) {
       orgLogo: data.org_logo,
     }).returning();
 
+    console.log("Organization created successfully:", organization[0]);
+
     return {
       success: true,
       message: "Organization created successfully",
       data: organization[0]
     };
   } catch (error) {
-    console.error("Error creating organization:", error);
+    console.error("Detailed error creating organization:", error);
     return {
       success: false,
-      message: "Failed to create organization"
+      message: error instanceof Error ? error.message : "Failed to create organization"
     };
   }
 } 
