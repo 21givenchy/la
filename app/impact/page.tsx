@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Select } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent,  CardHeader, CardTitle } from "@/components/ui/card"
+import CarbonCalculator from './_components/carbon-calculator';
 
 export default function Dashboard() {
   const { isLoaded } = useSignIn();
@@ -76,7 +77,12 @@ export default function Dashboard() {
     { title: 'Educational Initiatives', progress: 85 },
   ]
 
- 
+  const handleCarbonCalculation = (value: number) => {
+    setMetrics((prevMetrics) => ({
+      ...prevMetrics,
+      carbonFootprint: value,
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -138,10 +144,7 @@ export default function Dashboard() {
             <section>
               <h2 className="text-2xl font-bold mb-4">Input Daily Impact</h2>
               <form className="space-y-4">
-                <div>
-                  <label htmlFor="carbonFootprint">Carbon Footprint (kg CO2e)</label>
-                  <Input id="carbonFootprint" type="number" placeholder="Enter carbon footprint" />
-                </div>
+                <CarbonCalculator onCalculate={handleCarbonCalculation} />
                 <div>
                   <label htmlFor="waterUsage">Water Usage (liters)</label>
                   <Input id="waterUsage" type="number" placeholder="Enter water usage" />
