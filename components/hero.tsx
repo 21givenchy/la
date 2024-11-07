@@ -20,16 +20,16 @@ export default function Hero() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              href="/demo"
+              href="/impact"
               className="bg-[#7cb342] text-white py-3 px-6 rounded-full text-center hover:bg-[#6a9c39] transition-colors font-semibold"
             >
               Get a Free Demo
             </Link>
             <Link
-              href="/case-studies"
+              href="/about"
               className="border-2 border-[#0a5c45] text-[#0a5c45] py-3 px-6 rounded-full text-center hover:bg-[#0a5c45] hover:text-white transition-colors font-semibold"
             >
-              View Case Studies
+              Learn More
             </Link>
           </div>
           <div className="mt-8 text-sm text-[#0a5c45]">
