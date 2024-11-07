@@ -9,7 +9,7 @@ import { NavigationMenu, NavigationMenuLink, NavigationMenuList } from "./ui/nav
 // import ModeToggle from "../mode-toggle"
 import { SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import ModeToggle from "../components/mode-toggle";
-import {  SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import {   SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export function NavBar() {
 
@@ -49,10 +49,15 @@ export function NavBar() {
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
+                                <Link href="/sign-in">
+                                    <Button variant="outline" className="w-full">Sign-in</Button>
+                                </Link>
+                            </DialogClose>
+                            <DialogClose asChild>
                                 
                                <Button variant="outline" className="w-full">           
                         <SignedOut>
-              <SignInButton />
+         
             </SignedOut>
             <SignedIn>
               <UserButton />
@@ -86,7 +91,7 @@ export function NavBar() {
                     <Link href="/sign-in">
                       
                         <SignedOut>
-              <SignInButton />
+              
             </SignedOut>
             <SignedIn>
               <UserButton />
