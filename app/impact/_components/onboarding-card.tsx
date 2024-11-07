@@ -111,7 +111,7 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">
-              Your organization has been successfully registered. We're excited to help you track and improve your impact.
+              Your organization has been successfully registered. We&apos;re excited to help you track and improve your impact.
             </p>
             <p className="text-sm text-muted-foreground">
               Redirecting you to your dashboard...
