@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from 'sonner'
 import { z } from "zod"
+import { createOrganization } from '@/utils/actions/create-organization'
 
 // Update the interface to remove userId
 interface OnboardingStepsProps {
@@ -27,6 +28,7 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
   const { user, isLoaded } = useUser()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
+  const [showThankYou, setShowThankYou] = useState(false)
 
   const form = useForm<z.infer<typeof createChurchSchema>>({
     resolver: zodResolver(createChurchSchema),
@@ -52,23 +54,36 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
     }
   }, [isLoaded, user, form])
 
-  async function onSubmit() {
-    setIsSubmitting(true)
+  async function onSubmit(data: z.infer<typeof createChurchSchema>) {
+    setIsSubmitting(true);
     try {
       if (!user || !user.id) {
-        throw new Error("User is not authenticated")
+        throw new Error("User is not authenticated");
       }
-      
-      // Since there's no database, we'll simulate a successful submission
-      toast.success("Your organization has been created, redirecting to dashboard")
-      onComplete()
-      router.push('/impact') // Remove the setTimeout for immediate redirect
-      
+
+      const result = await createOrganization(data);
+
+      if (result.success) {
+        toast.success("Thank you for joining! Your organization has been registered successfully.");
+        // Show a more detailed success message
+        toast.message("Welcome to frontforumfocus!", {
+          description: "We're excited to help you track and improve your impact. Redirecting you to your dashboard...",
+          duration: 5000,
+        });
+        
+        setShowThankYou(true);
+        setTimeout(() => {
+          onComplete();
+          router.push('/impact');
+        }, 3000);
+      } else {
+        toast.error(result.message || "Failed to create organization");
+      }
     } catch (error) {
-      console.error("Error creating organization:", error)
-      toast.error("An unexpected error occurred. Please try again.")
+      console.error("Error creating organization:", error);
+      toast.error("An unexpected error occurred. Please try again.");
     } finally {
-      setIsSubmitting(false) // Make sure to reset the submitting state
+      setIsSubmitting(false);
     }
   }
 
@@ -85,6 +100,27 @@ export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
   // if (!isLoaded) {
   //   return <div>Loading...</div>
   // }
+
+  if (showThankYou) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="w-full max-w-2xl text-center p-8">
+          <CardHeader>
+            <Check className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <CardTitle className="text-2xl mb-2">Thank You for Joining!</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground mb-4">
+              Your organization has been successfully registered. We're excited to help you track and improve your impact.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Redirecting you to your dashboard...
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center">
