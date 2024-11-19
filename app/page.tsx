@@ -7,20 +7,20 @@ import CTA from "@/components/cta";
 import Footer from "@/components/Footer";
 import Steps
  from "@/components/steps";
-import { Main, Section, Container,  } from "@/components/craft";
+import { Main } from "@/components/craft";
 export default function Home() {
   return (
-    <Main>
-    <Section>
-      <Container>
+    <Main className=" flex min-h-screen flex-col items-center justify-between" >
+    
+      
         <Hero />
         <Features />
         <Steps />
         <Benefits />
         <CTA />
         <Footer />
-      </Container>
-    </Section>
+      
+    
   </Main>
   );
 }

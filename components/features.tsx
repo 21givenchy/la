@@ -2,7 +2,7 @@ import { BarChart3, Users, Clock, FileText, LineChart, Leaf } from 'lucide-react
 
 export default function Features() {
   return (
-    <div className="min-h-screen bg-green-50 p-8">
+    <div className="flex min-h-screen bg-green-50 p-8">
       <div className="max-w-6xl mx-auto">
         <p className="text-green-600 font-semibold mb-2">Key Features</p>
         <h1 className="text-5xl font-bold text-green-900 mb-4">Impact Visualizer</h1>

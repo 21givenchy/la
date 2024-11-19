@@ -1,326 +1,202 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useUser } from '@clerk/nextjs'
+import { useRouter } from "next/navigation"
+import { toast } from 'sonner'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Textarea } from '@/components/ui/textarea'
-import { createChurchSchema } from '@/utils/types'
-import { useUser } from '@clerk/nextjs'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Check, CheckCircle2 } from 'lucide-react'
-import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
-import { toast } from 'sonner'
-import { z } from "zod"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Check } from 'lucide-react'
 import { createOrganization } from '@/utils/actions/create-organization'
 
-// Update the interface to remove userId
-interface OnboardingStepsProps {
-  onComplete: () => void;
+interface FormData {
+  org_name: string;
+  org_size: number;
+  industry: string;
+  transport: {
+    car_usage: number;
+    train_usage: number;
+    plane_usage: number;
+  };
+  electricity_consumption: number;
+  water_usage: number;
+  waste_management: number;
 }
 
-export default function OnboardingSteps({ onComplete }: OnboardingStepsProps) {
+const initialFormData: FormData = {
+  org_name: "",
+  org_size: 0,
+  industry: "",
+  transport: {
+    car_usage: 0,
+    train_usage: 0,
+    plane_usage: 0,
+  },
+  electricity_consumption: 0,
+  water_usage: 0,
+  waste_management: 0,
+}
+
+export default function OnboardingCard({ onComplete }: { onComplete: () => void }) {
   const [currentStep, setCurrentStep] = useState(1)
-  const [isCompleted, setIsCompleted] = useState(false)
-  const totalSteps = 4
-  const { user, isLoaded } = useUser()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formData, setFormData] = useState<FormData>(initialFormData)
+  const { user } = useUser()
   const router = useRouter()
-  const [showThankYou, setShowThankYou] = useState(false)
 
-  const form = useForm<z.infer<typeof createChurchSchema>>({
-    resolver: zodResolver(createChurchSchema),
-    defaultValues: {
-      org_name: "frontforumfocus",
-      org_site: "https://www.frontforumfocus.tech",
-      org_email: "frontforumfocus@gmail.com",
-      org_phone: "(289) 946-1487",
-      org_address: "65 Sunrise Ave.",
-      org_city: "Excel sheets",
-      org_state: "Carbon Footprint",
-      org_zip: "hybrid grid eg solar",
-      org_country: "Kenya",
-      org_description: "Empowering businesses to make a positive impact.",
-      org_logo: "",
-      userId: '',
-    }
-  })
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: name.includes('transport.') ? {
+        ...prev.transport,
+        [name.split('.')[1]]: Number(value)
+      } : Number(value) || value
+    }))
+  }, [])
 
-  useEffect(() => {
-    if (isLoaded && user) {
-      form.setValue('userId', user.id)
-    }
-  }, [isLoaded, user, form])
+  const handleSelectChange = useCallback((value: string) => {
+    setFormData(prev => ({ ...prev, industry: value }))
+  }, [])
 
-  async function onSubmit(data: z.infer<typeof createChurchSchema>) {
-    setIsSubmitting(true);
+  const nextStep = useCallback(() => setCurrentStep(prev => Math.min(prev + 1, 4)), [])
+  const prevStep = useCallback(() => setCurrentStep(prev => Math.max(prev - 1, 1)), [])
+
+  const onSubmit = useCallback(async () => {
     try {
       if (!user || !user.id) {
-        throw new Error("User is not authenticated");
+        throw new Error("User is not authenticated")
       }
 
-      const result = await createOrganization(data);
+      const organizationData = {
+        ...formData,
+        userId: user.id,
+        currentStep: currentStep,
+        org_site: "",
+        org_email: "",
+        org_phone: "",
+        org_address: "",
+        org_city: "",
+        org_state: "",
+        org_zip: "",
+        org_country: "",
+        org_description: "",
+        org_logo: "",
+        sustainability_data: undefined,
+      }
+
+      const result = await createOrganization(organizationData)
 
       if (result.success) {
-        toast.success("Thank you for joining! Your organization has been registered successfully.");
-        // Show a more detailed success message
-        toast.message("Welcome to frontforumfocus!", {
-          description: "We're excited to help you track and improve your impact. Redirecting you to your dashboard...",
-          duration: 5000,
-        });
-        
-        setShowThankYou(true);
-        setTimeout(() => {
-          onComplete();
-          router.push('/impact');
-        }, 3000);
+        localStorage.setItem(`onboarding_complete_${user.id}`, 'true')
+        toast.success("Thank you for joining! Your organization has been registered successfully.")
+        onComplete()
+        router.push('/impact')
       } else {
-        toast.error(result.message || "Failed to create organization");
+        toast.error(result.message || "Failed to create organization")
       }
     } catch (error) {
-      console.error("Error creating organization:", error);
-      toast.error("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      console.error("Error creating organization:", error)
+      toast.error("An unexpected error occurred. Please try again.")
+    }
+  }, [formData, user, currentStep, onComplete, router])
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <>
+           <h3 className="text-lg font-semibold">What is your organization’s name?</h3>
+            <Input name="org_name" value={formData.org_name} onChange={handleInputChange} placeholder='Organization Name' />
+            <h3 className="text-lg font-semibold">How many employees do you have?</h3>
+            <Input name="org_size" type="number" value={formData.org_size} onChange={handleInputChange} placeholder='Number of employees' />
+            <h3 className="text-lg font-semibold">What industry does your organization belong to?</h3>
+          
+            <Select onValueChange={handleSelectChange} value={formData.industry}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select industry" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="technology">Technology</SelectItem>
+                <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                <SelectItem value="services">Services</SelectItem>
+                <SelectItem value="retail">Retail</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          </>
+        )
+      case 2:
+        return (
+          <>
+          <h3 className="text-lg font-semibold">What is your monthly car usage (km)?</h3>
+            <Input name="transport.car_usage" type="number" value={formData.transport.car_usage} onChange={handleInputChange} placeholder='Monthly Car Usage (km)' />
+            <h3 className="text-lg font-semibold">What is your monthly train usage (km)?</h3>
+          
+            <Input name="transport.train_usage" type="number" value={formData.transport.train_usage} onChange={handleInputChange} placeholder='Monthly Train Usage (km)' />
+            <h3 className="text-lg font-semibold">What is your monthly air travel (km)?</h3>
+            <Input name="transport.plane_usage" type="number" value={formData.transport.plane_usage} onChange={handleInputChange} placeholder='Monthly Air Travel (km)' />
+          </>
+        )
+      case 3:
+        return (
+          <>
+           <h3 className="text-lg font-semibold">What is your monthly electricity consumption (kWh)?</h3>
+            <Input name="electricity_consumption" type="number" value={formData.electricity_consumption} onChange={handleInputChange} placeholder='Monthly Electricity Consumption (kWh)' />
+            <h3 className="text-lg font-semibold">What is your monthly water usage (liters)?</h3>
+            <Input name="water_usage" type="number" value={formData.water_usage} onChange={handleInputChange} placeholder='Monthly Water Usage (liters)' />
+            <h3 className="text-lg font-semibold">What is your monthly waste generated (kg)?</h3>
+            <Input name="waste_management" type="number" value={formData.waste_management} onChange={handleInputChange} placeholder='Monthly Waste Generated (kg)' />
+          </>
+        )
+      case 4:
+        return (
+          <div className='flex flex-col w-full gap-3 justify-center items-center'>
+            <Check className='text-white-500 w-[3.5rem] h-[3.5rem] border rounded-full p-3 bg-green-500' />
+            <h2 className='text-lg font-medium'>Almost there</h2>
+            <Button onClick={onSubmit}>Submit</Button>
+          </div>
+        )
     }
   }
 
-  const nextStep = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep(prev => prev + 1)
-    } else {
-      setIsCompleted(true)
-    }
-  }
-
-  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1))
-
-  // if (!isLoaded) {
-  //   return <div>Loading...</div>
-  // }
-
-  if (showThankYou) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-2xl text-center p-8">
-          <CardHeader>
-            <Check className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <CardTitle className="text-2xl mb-2">Thank You for Joining!</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              Your organization has been successfully registered. We&apos;re excited to help you track and improve your impact.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Redirecting you to your dashboard...
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  // Progress bar implementation
+  const progressPercentage = ((currentStep - 1) / 3) * 100;
 
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle className="mb-4">Welcome to frontforumfocus</CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle className="mb-4">Welcome to frontforumfocus</CardTitle>
+            <Button 
+              variant="ghost" 
+              onClick={() => {
+                onComplete();
+                router.push('/impact');
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
           <div className="relative">
             <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2" />
             <div
               className="absolute top-1/2 left-0 h-1 bg-primary transition-all duration-300 ease-in-out -translate-y-1/2"
-              style={{ width: `${(isCompleted ? totalSteps : currentStep - 1) / (totalSteps - 1) * 100}%` }}
+              style={{ width: `${progressPercentage}%` }}
             />
-            <div className="relative flex justify-between">
-              {[1, 2, 3, 4].map((step) => (
-                <div key={step} className="flex items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isCompleted || currentStep >= step ? 'bg-primary text-primary-foreground' : 'bg-gray-200 text-gray-400'
-                    } transition-colors duration-300 ease-in-out z-10`}>
-                    {isCompleted || currentStep > step ? <CheckCircle2 className="w-5 h-5" /> : step}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-3 mt-4">
-              {currentStep === 1 && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="org_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Organization Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='Grace Bible Fellowship Church' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="org_site"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Site URL</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='https://frontforumfocus.up.railway.app' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="org_logo"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Org size</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='99-1000' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="org_description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                          <Textarea {...field} placeholder='A brief description of your organization.' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
-              {currentStep === 2 && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="org_email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='frontforumfocus@gmail.com' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="org_phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='(123) 456-7890' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
-              {currentStep === 3 && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="org_address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Country</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='Kenya' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="org_city"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>How do you currently collect sustainability data?</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='Excel sheets' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="org_state"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Key sustainability metrics you want to track</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='Carbon footprint' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="org_zip"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Current sustainability initiatives</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='hybrid grid eg solar' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="org_country"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Country</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder='USA' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
-              {currentStep === 4 && (
-                <div className='flex flex-col w-full gap-3 justify-center items-center'>
-                  <Check className='text-white-500 w-[3.5rem] h-[3.5rem] border rounded-full p-3 bg-green-500' />
-                  <h2 className='text-lg font-medium'>Almost there</h2>
-                  <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : 'Submit'}
-                  </Button>
-                </div>
-              )}
-            </form>
-          </Form>
+          {renderStep()}
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button className={`${currentStep === 1} ? "visibility"`} type="button" variant="outline" onClick={prevStep} disabled={currentStep === 1 || isCompleted}>
+          <Button type="button" variant="outline" onClick={prevStep} disabled={currentStep === 1}>
             Previous
           </Button>
-          {currentStep !== totalSteps && (
-            <Button type="button" onClick={nextStep} disabled={isCompleted}>
+          {currentStep !== 4 && (
+            <Button type="button" onClick={nextStep}>
               Next
             </Button>
           )}

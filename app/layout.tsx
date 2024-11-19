@@ -18,7 +18,18 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "frontforumfocus",
-  description: "frontforumfocus",
+  description: "sustainability management software",
+  icons: {
+    icon: [
+      {
+        media: '(prefers-color-scheme: light)',
+        url: '/app/favicon.ico',
+        href: '/app/favicon.ico',
+      },
+  
+    ],
+  },
+
 };
 
 export default function RootLayout({
@@ -28,24 +39,21 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <body 
-      
-      
-        className={ `${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <html lang="en" className="h-full">
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
           <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-        <NavBar />
-        
-        {children}
-        </ThemeProvider>
-      </body>
-    </html>
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NavBar />
+            <main className="flex-1 w-full max-w-[1920px] mx-auto">
+              {children}
+            </main>
+          </ThemeProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

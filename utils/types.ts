@@ -13,6 +13,23 @@ export const createChurchSchema = z.object({
   org_description: z.string(),
   org_logo: z.string(),
   userId: z.string(),
+  currentStep: z.number().min(1).max(4),
+  sustainability_data: z.object({
+    transport: z.object({
+      mode: z.enum(['car', 'train', 'plane', 'bus']),
+      distance: z.number(),
+      frequency: z.enum(['daily', 'weekly', 'monthly', 'yearly']),
+      fuelType: z.enum(['petrol', 'diesel', 'electric', 'hybrid']).optional(),
+    }),
+    energy: z.object({
+      electricity: z.number(),
+      renewable_percentage: z.number().min(0).max(100),
+    }),
+    waste: z.object({
+      recycling_rate: z.number().min(0).max(100),
+      waste_volume: z.number(),
+    }),
+  }).optional(),
 });
 
 export const updateChurchSchema = z.object({
