@@ -62,23 +62,31 @@ interface ProgressArea {
 }
 
 interface ActivityEntry {
-  [key: string]: string;
+  [key: string]: string | number;
 }
 
 interface ActivityData {
-  [activityId: string]: ActivityEntry[];
+  [key: string]: ActivityEntry[];
 }
 
 export default function Dashboard() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
-  const [metrics, setMetrics] = useState<Metrics>({
-    carbonFootprint: 0,
-    waterUsage: 0,
-    wasteReduction: 0,
-    communityEngagement: 0,
-    energyConsumption: 0,
+  
+  const [reportContent, setReportContent] = useState<string | null>(null);
+  
+  const [metrics, setMetrics] = useState<Metrics>(() => {
+    // Initialize metrics from localStorage or use default values
+    const savedMetrics = localStorage.getItem('dashboardMetrics');
+    return savedMetrics ? JSON.parse(savedMetrics) : {
+      carbonFootprint: 0,
+      waterUsage: 0,
+      wasteReduction: 0,
+      communityEngagement: 0,
+      energyConsumption: 0,
+    };
   });
+
   const [documents, setDocuments] = useState<VerificationDocument[]>([
     { type: 'odometer', file: null, description: 'Vehicle odometer reading for carbon footprint verification' },
     { type: 'electricity', file: null, description: 'Monthly electricity bill for energy consumption verification' },
@@ -87,32 +95,54 @@ export default function Dashboard() {
   ])
   const [reportType, setReportType] = useState<string>('')
   const [isGenerating, setIsGenerating] = useState(false)
-  const [reportUrl, setReportUrl] = useState<string | null>(null)
+  const [reportUrl] = useState<string | null>(null)
   const [selectedAlignment, setSelectedAlignment] = useState<Alignment | null>(null);
-  const [activityData, setActivityData] = useState<ActivityData>({});
-  const [goals, setGoals] = useState<Goal[]>([
-    {
-      id: '1',
-      category: 'Environmental',
-      title: 'Reduce Carbon Emissions',
-      target: 1000,
-      current: 750,
-      unit: 'kg CO2e',
-      deadline: '2024-12-31',
-      status: 'in-progress'
-    },
-    {
-      id: '2',
-      category: 'Social',
-      title: 'Community Volunteer Hours',
-      target: 500,
-      current: 320,
-      unit: 'hours',
-      deadline: '2024-12-31',
-      status: 'in-progress'
-    },
-    // Add more goals as needed
-  ]);
+  const [activityData, setActivityData] = useState<ActivityData>(() => {
+    // Initialize activityData from localStorage or use empty object
+    const savedActivityData = localStorage.getItem('activityData');
+    return savedActivityData ? JSON.parse(savedActivityData) : {};
+  });
+
+  const [goals, setGoals] = useState<Goal[]>(() => {
+    // Initialize goals from localStorage or use default values
+    const savedGoals = localStorage.getItem('goals');
+    return savedGoals ? JSON.parse(savedGoals) : [
+      {
+        id: '1',
+        category: 'Environmental',
+        title: 'Reduce Carbon Emissions',
+        target: 1000,
+        current: 750,
+        unit: 'kg CO2e',
+        deadline: '2024-12-31',
+        status: 'in-progress'
+      },
+      {
+        id: '2',
+        category: 'Social',
+        title: 'Community Volunteer Hours',
+        target: 500,
+        current: 320,
+        unit: 'hours',
+        deadline: '2024-12-31',
+        status: 'in-progress'
+      },
+      // Add more goals as needed
+    ];
+  });
+
+  // Add useEffect hooks to save data when it changes
+  useEffect(() => {
+    localStorage.setItem('dashboardMetrics', JSON.stringify(metrics));
+  }, [metrics]);
+
+  useEffect(() => {
+    localStorage.setItem('activityData', JSON.stringify(activityData));
+  }, [activityData]);
+
+  useEffect(() => {
+    localStorage.setItem('goals', JSON.stringify(goals));
+  }, [goals]);
 
   useEffect(() => {
     if (isSignedIn) {
@@ -324,6 +354,7 @@ export default function Dashboard() {
       description: 'Quality education and gender equality'
     }
   ];
+ 
 
   const handleCarbonCalculation = (value: number) => {
     setMetrics((prevMetrics) => ({
@@ -363,34 +394,33 @@ export default function Dashboard() {
   }
 
   const handleGenerateReport = async () => {
-    setIsGenerating(true)
+    setIsGenerating(true);
     try {
+      const simplePrompt = "Generate an industry-standard ESG report for Bank of America with financial metrics and activities mapped to SDGs.";
+
       const response = await fetch('/api/generate-report', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          reportType,
-          metrics,
-          timeframe: reportType.toLowerCase(),
-        }),
-      })
+        body: JSON.stringify({ prompt: simplePrompt }),
+      });
 
       if (!response.ok) {
-        throw new Error('Failed to generate report')
+        throw new Error('Failed to generate report');
       }
 
-      const data = await response.json()
-      setReportUrl(data.reportUrl)
-      alert('Report generated successfully!')
+      const data = await response.json();
+      console.log('Report Data:', data); // Log the data received from the API
+      setReportContent(data.report); // Store the report content
+      alert('Report generated successfully!');
     } catch (error) {
-      console.error('Error generating report:', error)
-      alert('Failed to generate report')
+      console.error('Error generating report:', error);
+      alert('Failed to generate report');
     } finally {
-      setIsGenerating(false)
+      setIsGenerating(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -576,6 +606,8 @@ export default function Dashboard() {
                   <NextImage
                     src="/sample.jpg" 
                     alt="Sample Report" 
+                    width={800}
+                    height={600}
                     className="max-w-full h-auto rounded-lg"
                   />
                   <Button 
@@ -595,8 +627,21 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
             </section>
+            <TabsContent value="reports">
+          <section className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Generated Report</h2>
+            {reportContent ? (
+              <div className="bg-gray-800 p-4 rounded-lg">
+                <pre className="whitespace-pre-wrap">{reportContent}</pre>
+              </div>
+            ) : (
+              <p>No report generated yet.</p>
+            )}
+          </section>
+        </TabsContent>
           </TabsContent>
           <TabsContent value='alignments'>
+        
             <section className="space-y-6">
               <h2 className="text-2xl font-bold mb-4">Alignments</h2>
               

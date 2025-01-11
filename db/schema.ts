@@ -41,6 +41,26 @@ export const organizationsTable = sqliteTable('organizations', {
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => new Date()),
 });
 
+export const metricsTable = sqliteTable('metrics', {
+  id: integer('id').primaryKey(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => usersTable.id, { onDelete: 'cascade' }),
+  carbonFootprint: integer('carbon_footprint').notNull(),
+  waterUsage: integer('water_usage').notNull(),
+  wasteReduction: integer('waste_reduction').notNull(),
+  communityEngagement: integer('community_engagement').notNull(),
+  energyConsumption: integer('energy_consumption').notNull(),
+  createdAt: text('created_at')
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).$onUpdate(() => new Date()),
+});
+
+
+export type InsertMetric = typeof metricsTable.$inferInsert;
+export type SelectMetric = typeof metricsTable.$inferSelect;
+
 export type InsertUser = typeof usersTable.$inferInsert;
 export type SelectUser = typeof usersTable.$inferSelect;
 
