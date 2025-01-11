@@ -9,11 +9,12 @@ import OnboardingSteps from './_components/onboarding-card'
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent,  CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent,  CardDescription,  CardHeader, CardTitle } from "@/components/ui/card"
 import CarbonCalculator from './_components/carbon-calculator';
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge"
 import NextImage from 'next/image'
+import { Cell, Pie, PieChart as RePieChart } from "recharts"
 
 interface Metrics {
   carbonFootprint: number;
@@ -22,6 +23,12 @@ interface Metrics {
   communityEngagement: number;
   energyConsumption: number;
 }
+
+const data = [
+  { name: "Scope 1", value: 30, color: "#22c55e" },
+  { name: "Scope 2", value: 40, color: "#3b82f6" },
+  { name: "Scope 3", value: 30, color: "#f59e0b" },
+]
 
 interface VerificationDocument {
   type: string;
@@ -396,7 +403,7 @@ export default function Dashboard() {
   const handleGenerateReport = async () => {
     setIsGenerating(true);
     try {
-      const simplePrompt = "Generate an industry-standard ESG report for Bank of America with financial metrics and activities mapped to SDGs.";
+      const simplePrompt = "Generate an industry-standard ESG report for Bank of America with financial metrics and activities mapped to SDGs. Also show tranparency by disclosing the GRIs and SASB standards used.";
 
       const response = await fetch('/api/generate-report', {
         method: 'POST',
@@ -442,11 +449,55 @@ export default function Dashboard() {
             <section>
               <h2 className="text-2xl font-bold mb-4">Key Metrics</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <MetricCard title="Carbon Footprint" value={metrics.carbonFootprint} unit="kg CO2e" icon={BarChart2} />
+                <MetricCard title="Total GHG Emissions" value={metrics.carbonFootprint} unit="kg CO2e" icon={BarChart2} />
                 <MetricCard title="Water Usage" value={metrics.waterUsage} unit="liters" icon={TrendingUp} />
                 <MetricCard title="Waste Reduction" value={metrics.wasteReduction} unit="kg" icon={PieChart} />
-                <MetricCard title="Community Engagement" value={metrics.communityEngagement} unit="hours" icon={User} />
-                <MetricCard title="Energy Consumption" value={metrics.energyConsumption} unit="kWh" icon={Leaf} />
+                <MetricCard title="Sustainable Finance" value={metrics.communityEngagement} unit="$M" icon={User} />
+                <MetricCard title="Renewable energy" value={metrics.energyConsumption} unit="kWh" icon={Leaf} />
+
+                <Card className="col-span-3">
+              <CardHeader>
+                <CardTitle>Emissions by Scope</CardTitle>
+                <CardDescription>
+                  Distribution of GHG emissions across scopes
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex h-[200px] items-center justify-center">
+                  <RePieChart width={200} height={200}>
+                    <Pie
+                      data={data}
+                      cx={100}
+                      cy={100}
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                  </RePieChart>
+                </div>
+                <div className="flex justify-center space-x-4">
+                  {data.map((item) => (
+                    <div
+                      key={item.name}
+                      className="flex items-center space-x-2"
+                    >
+                      <div
+                        className="h-3 w-3 rounded-full"
+                        style={{ backgroundColor: item.color }}
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        {item.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
               </div>
             </section>
 
